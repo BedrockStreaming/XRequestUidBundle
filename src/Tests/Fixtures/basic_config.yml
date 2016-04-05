@@ -1,0 +1,11 @@
+m6_web_x_request_uid:
+    services:
+        - test.guzzle1
+
+
+services:
+    test.guzzle1:
+        class: 'GuzzleHttp\Client'
+
+    test.guzzle2:
+        class: 'GuzzleHttp\Client'

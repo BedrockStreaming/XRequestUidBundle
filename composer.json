@@ -1,0 +1,23 @@
+{
+    "name" : "m6web/xrequestuid-bundle",
+    "type" : "symfony-bundle",
+    "description" : "bundle sf2 allowing setting ids in headers propagated via guzzle",
+    "authors" : [{
+            "name" : "Olivier Mansour",
+            "email" : "olivier.mansour@m6.fr"
+        }
+    ],
+    "require" : {
+        "php" : "^5.6|^7.0"
+    },
+    "require-dev" : {
+        "atoum/atoum" : "@stable",
+        "guzzlehttp/guzzle": "~6.0",
+        "m6web/coke" : "~1.2",
+        "m6web/symfony2-coding-standard" : "~1.2",
+        "symfony/symfony": "^2.3|^3.0"
+    },
+    "autoload": {
+        "psr-4": { "M6Web\\Bundle\\XRequestUidBundle\\": "src/" }
+    }
+}

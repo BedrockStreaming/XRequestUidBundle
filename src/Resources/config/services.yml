@@ -1,0 +1,19 @@
+services:
+    m6_xrequestid.uniqid:
+        class: 'M6Web\Bundle\XRequestUidBundle\UniqId\UniqId'
+    m6_xrequestid.kernelcontroller.requestuid.listener:
+        class: M6Web\Bundle\XRequestUidBundle\EventListener\KernelControllerRequestUidListener
+        arguments:
+            - '@uniqid.inner'
+            - '%request_uid_header_name%'
+            - '%request_parent_uid_header_name%'
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController}
+
+    m6_xrequestid.kernelresponse.requestuid.listener:
+        class: 'M6Web\Bundle\XRequestUidBundle\EventListener\KernelResponseRequestUidListener'
+        arguments:
+            - '%request_uid_header_name%'
+            - '%request_parent_uid_header_name%'
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse}
