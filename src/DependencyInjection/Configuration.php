@@ -26,8 +26,8 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('services')
                     ->prototype('scalar')->end()
                 ->end()
-                ->scalarNode('request_uid_header_name')->defaultValue('X-Request-Id')->end()
-                ->scalarNode('request_parent_uid_header_name')->defaultValue('X-Request-Parent-Id')->end()
+                ->scalarNode('request_uid_header_name')->defaultValue('X-Request-Uid')->end()
+                ->scalarNode('request_parent_uid_header_name')->defaultValue('X-Request-Parent-Uid')->end()
                 ->scalarNode('uniqId_service')->end();
 
         return $treeBuilder;

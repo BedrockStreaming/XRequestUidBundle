@@ -64,9 +64,11 @@ class GuzzleProxy extends Client
      */
     public function __construct(Client $guzzleClient, RequestStack $requestStack, UniqIdInterface $uniqId, $headerName, $headerParentName)
     {
-        $this->guzzleClient = $guzzleClient;
-        $this->requestStack = $requestStack;
-        $this->uniqId       = $uniqId;
+        $this->guzzleClient     = $guzzleClient;
+        $this->requestStack     = $requestStack;
+        $this->uniqId           = $uniqId;
+        $this->headerName       = $headerName;
+        $this->headerParentName = $headerParentName;
     }
 
     /**
@@ -98,9 +100,9 @@ class GuzzleProxy extends Client
             $request =  $this->requestStack->getCurrentRequest();
             if ($request) {
                 // generate a new uniqid for the request
-                $args[1]['headers']['X-Request-Uid'] = $this->uniqId->uniqId();
+                $args[1]['headers'][$this->headerName] = $this->uniqId->uniqId();
                 // switch the id to the parent
-                $args[1]['headers']['X-Request-Parent-Uid'] = $request->attributes->get('X-Request-Parent-Uid');
+                $args[1]['headers'][$this->headerParentName] = $request->attributes->get($this->headerParentName);
             }
         }
 

@@ -6,7 +6,7 @@
  
 This situation leads to many difficulties to trace calls betweens APIs systems. This bundle provide a solution to generate ids for new requests and configure your guzzle services accordingly to uses those ids in sub http requests made by them.
 
-The bundle will generate and/or transfert those two headers : X-Request-Id and X-Request-Parent-Id.
+The bundle will generate and/or transfert those two headers : X-Request-Uid and X-Request-Parent-Uid.
  
 ##  How ? 
 
@@ -21,8 +21,8 @@ At the end both headers are added to the response for debugging purpose.
 
 ```yml 
 m6_web_x_request_uid:
-    request_uid_header_name: X-Request-toto    # optionnal, X-Request-Id by default
-    request_parent_uid_header_name: X-Parent   # optionnal, X-Request-Parent-Id by default 
+    request_uid_header_name: X-Request-toto    # optionnal, X-Request-Uid by default
+    request_parent_uid_header_name: X-Parent   # optionnal, X-Request-Parent-Uid by default 
     uniqId_service: myservice                  # optionnal, a service implementing UniqIdInterface 
     services:                                  # list of guzzle services to decorate 
         - test.guzzle1
