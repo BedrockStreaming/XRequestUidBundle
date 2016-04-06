@@ -15,7 +15,7 @@
         "guzzlehttp/guzzle": "~6.0",
         "m6web/coke" : "~1.2",
         "m6web/symfony2-coding-standard" : "~1.2",
-        "symfony/symfony": "^2.3|^3.0"
+        "symfony/symfony": "^2.7|^3.0"
     },
     "autoload": {
         "psr-4": { "M6Web\\Bundle\\XRequestUidBundle\\": "src/" }
