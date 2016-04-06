@@ -1,0 +1,15 @@
+m6_web_x_request_uid:
+    uniqId_service: myuniqid
+    services:
+        - test.guzzle1
+
+
+services:
+    test.guzzle1:
+        class: 'GuzzleHttp\Client'
+
+    test.guzzle2:
+        class: 'GuzzleHttp\Client'
+
+    myuniqid:
+        class: M6Web\Bundle\XRequestUidBundle\Tests\Units\DependencyInjection\FakeUniqIdService

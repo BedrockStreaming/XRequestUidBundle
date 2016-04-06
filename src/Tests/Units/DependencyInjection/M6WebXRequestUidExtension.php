@@ -51,15 +51,30 @@ class M6WebXRequestUidExtension extends atoum\test
     {
         $this->initContainer('basic_config', true);
 
-
         $this
             ->boolean($this->container->has('test.guzzle1'))
                 ->isIdenticalTo(true)
             ->object($this->container->get('test.guzzle1'))
                 ->isInstanceOf('GuzzleHttp\Client')
                 ->isInstanceOf('M6Web\Bundle\XRequestUidBundle\Guzzle\GuzzleProxy')
-
+            ->object($this->container->get('test.guzzle2'))
+                ->isInstanceOf('GuzzleHttp\Client')
+                ->isNotInstanceOf('M6Web\Bundle\XRequestUidBundle\Guzzle\GuzzleProxy') // guzzle2 is not decorated
         ;
+    }
 
+    public function testUniqIdService()
+    {
+        $this->initContainer('uniqid_config', true);
+
+        $this
+            ->object($uniqid = $this->container->get('myuniqid'))
+                ->isInstanceOf('M6Web\Bundle\XRequestUidBundle\UniqId\UniqIdInterface')
+            ->string($uniqid->uniqid())
+                ->isIdenticalTo('unique')
+        ->object($uniqid = $this->container->get('uniqid.inner'))
+            ->isInstanceOf('M6Web\Bundle\XRequestUidBundle\UniqId\UniqIdInterface')
+            ->string($uniqid->uniqid())
+                ->isIdenticalTo('unique');
     }
 }
