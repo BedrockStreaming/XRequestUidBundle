@@ -2,9 +2,9 @@
 
 ## Why ?
 
-*"The cool thing in microservice is that you can generate 15 http calls in you infrastructure just with on client http call"*  
+*"The cool thing in microservice is that you can generate 15 http calls in your infrastructure just with on client http call"*  
  
-This situation leads to many difficulties to trace calls betweens APIs systems. This bundle provide a solution to generate ids for new requests and configure your guzzle services accordingly to uses those ids in sub-requests.
+This situation leads to many difficulties to trace calls betweens APIs systems. This bundle provide a solution to generate ids for new requests and configure your guzzle services accordingly to uses those ids in sub http requests made by them.
 
 The bundle will generate and/or transfert those two headers : X-Request-Id and X-Request-Parent-Id.
  
