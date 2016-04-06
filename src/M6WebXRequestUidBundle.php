@@ -17,6 +17,6 @@ class M6WebXRequestUidBundle extends Bundle
      */
     public function getContainerExtension()
     {
-        return new DependencyInjection\M6WebXRequestUiExtension();
+        return new DependencyInjection\M6WebXRequestUidExtension();
     }
 }
