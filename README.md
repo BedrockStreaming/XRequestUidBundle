@@ -33,6 +33,8 @@ services:
 
 ```
 
+If you have other bundles creating guzzle services, be sure to add the bundle after them in your `AppKernel` file.
+
 
 ## Todo 
 
