@@ -2,9 +2,11 @@
 
 ## Why ?
 
-*"The cool thing in microservice is that you can generate 15 http calls in your infrastructure just with on client http call"*  
- 
-This situation leads to many difficulties to trace calls betweens APIs systems. This bundle provide a solution to generate ids for new requests and configure your guzzle services accordingly to uses those ids in sub http requests made by them.
+*"The cool thing in microservices is that you can generate 15 http calls in your infrastructure just with on client http call"*  
+
+![](doc/without-xrequest.jpg)
+
+This situation leads to many difficulties to trace calls betweens APIs systems, especially when an internal call fails. This bundle provide a solution to generate ids for new requests and configure your guzzle services accordingly to uses those ids in sub http requests made by them.
 
 The bundle will generate and/or transfert those two headers : X-Request-Uid and X-Request-Parent-Uid.
  
@@ -16,6 +18,9 @@ All your guzzle services are decorated with a proxy who will add the two headers
 
 At the end both headers are added to the response for debugging purpose.
 
+![](doc/with-xrequest.jpg)
+
+You can now add thoses two headers in your logs file and follow the calls.
 
 ## Configuration
 
@@ -34,6 +39,13 @@ services:
 ```
 
 If you have other bundles creating guzzle services, be sure to add the bundle after them in your `AppKernel` file.
+
+You can define you own uniqId service or juste use the one provided in the bundle (wich do a basic php `uniqid`).
+
+## Related
+
+* Use The [GuzzleHttp Bundle](https://github.com/M6Web/GuzzleHttpBundle) to instanciate your guzzle services.
+* Use the [LogBridge Bundle](https://github.com/M6Web/LogBridgeBundle) to see responses when a problem occurs. 
 
 
 ## Todo 
