@@ -21,14 +21,19 @@ class GuzzleProxy extends atoum\test
                 'X-Request-Id',
                 'X-Request-Parent-Id'
             ))
-                ->class('GuzzleHttp\Client');
+            ->object($c)
+                ->isInstanceOf('GuzzleHttp\ClientInterface');
     }
 
-    public function testMethod()
+    /**
+     * @param string $method
+     */
+    public function testMethod($method, $options = [])
     {
         list($guzzleClient, $requestStack, $uniqId) = $this->getMocks();
 
-        $guzzleClient->getMockController()->get = null;
+        $guzzleClient->getMockController()->{$method} = null;
+        $options = array_merge($options, ['headers' => ['X-Request-Id' => '1234', 'X-RequestParentId' => 'ParentId']]);
 
         $this
             ->if($c = new TestedClass(
@@ -38,27 +43,53 @@ class GuzzleProxy extends atoum\test
                 'X-Request-Id',
                 'X-RequestParentId'
             ))
-            ->and($c->get('http://raoul.com'))
+            ->and($c->get($url = 'http://raoul.com'))
             ->mock($guzzleClient)
                 ->call('get')
-                    ->once()
+                    ->withArguments($url, $options)
+                        ->once()
         ;
     }
 
+    /**
+     * @return array
+     */
+    protected function testMethodDataProvider()
+    {
+        return [
+            [
+                'get'
+            ],
+            [
+                'send'
+            ],
+            [
+                'request'
+            ],
+            [
+                'get',
+                [
+                    'headers' => [
+                        'super-header' => 'youpi'
+                    ]
+                ]
+            ]
+        ];
+    }
 
     protected function getMocks()
     {
+        $request      = new \Symfony\Component\HttpFoundation\Request([], [], ['X-RequestParentId' => 'ParentId']);
         $requestStack = new \mock\Symfony\Component\HttpFoundation\RequestStack();
-        $request      = new \mock\Symfony\Component\HttpFoundation\Request();
-        $parameterBag = new \mock\Symfony\Component\HttpFoundation\ParameterBag();
-        $parameterBag->getMockController()->get = 'ParentId';
-        $request->attributes = $parameterBag;
         $requestStack->getMockController()->getCurrentRequest = $request;
+
+        $uniqId = new \mock\M6Web\Bundle\XRequestUidBundle\UniqId\UniqId();
+        $uniqId->getMockController()->uniqId = '1234';
 
         return [
             new \mock\GuzzleHttp\Client(),
-            new \mock\Symfony\Component\HttpFoundation\RequestStack(),
-            new UniqId()
+            $requestStack,
+            $uniqId
         ];
     }
 

@@ -2,8 +2,10 @@
 
 namespace M6Web\Bundle\XRequestUidBundle\Guzzle;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use M6Web\Bundle\XRequestUidBundle\UniqId\UniqIdInterface;
+use GuzzleHttp\Client;
+use Psr\Http\Message\RequestInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -12,7 +14,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * The proxy extends the guzzle client to pass all interfaces
  *
  */
-class GuzzleProxy extends Client
+class GuzzleProxy implements ClientInterface
 {
 
     /**
@@ -95,19 +97,65 @@ class GuzzleProxy extends Client
      */
     public function __call($method, $args)
     {
-        if (in_array($method, $this->allowedMethods)) {
-            // add headers to guzzle client
-            $request =  $this->requestStack->getCurrentRequest();
-            if ($request) {
-                // generate a new uniqid for the request
-                $args[1]['headers'][$this->headerName] = $this->uniqId->uniqId();
-                // switch the id to the parent
-                $args[1]['headers'][$this->headerParentName] = $request->attributes->get($this->headerParentName);
-            }
-        }
+        $options = array_merge($args[1] ?? [], $this->getOptions($method));
+        $args[1] = $options;
 
         // forward the call to the client
         return call_user_func_array([$this->guzzleClient, $method], $args);
+    }
+
+    /**
+     * @param string $method
+     * @param string $uri
+     * @param array  $options
+     *
+     * @return mixed|\Psr\Http\Message\ResponseInterface
+     */
+    public function request($method, $uri = '', array $options = [])
+    {
+        $options = array_merge($options, $this->getOptions($method));
+
+        return $this->guzzleClient->request($method, $uri, $options);
+    }
+
+    /**
+     * @param string $method
+     * @param string $uri
+     * @param array  $options
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function requestAsync($method, $uri = '', array $options = [])
+    {
+        $options = array_merge($options, $this->getOptions($method));
+
+        return $this->guzzleClient->requestAsync($method, $uri, $options);
+    }
+
+    /**
+     * @param RequestInterface $request
+     * @param array            $options
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function sendAsync(RequestInterface $request, array $options = [])
+    {
+        $options = array_merge($options, $this->getOptions($request->getMethod()));
+
+        return $this->guzzleClient->sendAsync($request, $options);
+    }
+
+    /**
+     * @param RequestInterface $request
+     * @param array            $options
+     *
+     * @return mixed|\Psr\Http\Message\ResponseInterface
+     */
+    public function send(RequestInterface $request, array $options = [])
+    {
+        $options = array_merge($options, $this->getOptions($request->getMethod()));
+
+        return $this->guzzleClient->send($request, $options);
     }
 
     /**
@@ -120,5 +168,40 @@ class GuzzleProxy extends Client
         $this->guzzleClient = $guzzle;
 
         return $this;
+    }
+
+    /**
+     * @param null $option
+     *
+     * @return array|mixed|null
+     */
+    public function getConfig($option = null)
+    {
+        return $this->guzzleClient->getConfig($option);
+    }
+
+    /**
+     * @param string $method
+     *
+     * @return array
+     */
+    protected function getOptions(string $method): array
+    {
+        if (in_array(strtolower($method), $this->allowedMethods)) {
+            // add headers to guzzle client
+            $request =  $this->requestStack->getCurrentRequest();
+            if ($request) {
+                return [
+                    'headers' => [
+                        // generate a new uniqid for the request
+                        $this->headerName => $this->uniqId->uniqId(),
+                        // switch the id to the parent
+                        $this->headerParentName => $request->attributes->get($this->headerParentName)
+                    ]
+                ];
+            }
+        }
+
+        return [];
     }
 }
