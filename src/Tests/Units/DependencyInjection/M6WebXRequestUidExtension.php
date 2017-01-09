@@ -50,15 +50,14 @@ class M6WebXRequestUidExtension extends atoum\test
     public function testBasicConfiguration()
     {
         $this->initContainer('basic_config', true);
-
         $this
             ->boolean($this->container->has('test.guzzle1'))
                 ->isIdenticalTo(true)
             ->object($this->container->get('test.guzzle1'))
-                ->isInstanceOf('GuzzleHttp\Client')
+                ->isInstanceOf('GuzzleHttp\ClientInterface')
                 ->isInstanceOf('M6Web\Bundle\XRequestUidBundle\Guzzle\GuzzleProxy')
             ->object($this->container->get('test.guzzle2'))
-                ->isInstanceOf('GuzzleHttp\Client')
+                ->isInstanceOf('GuzzleHttp\ClientInterface')
                 ->isNotInstanceOf('M6Web\Bundle\XRequestUidBundle\Guzzle\GuzzleProxy') // guzzle2 is not decorated
         ;
     }
