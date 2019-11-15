@@ -4,6 +4,8 @@ m6_web_x_request_uid:
 
 
 services:
+    _defaults:
+        public: true
     test.guzzle1:
         class: 'GuzzleHttp\Client'
 
