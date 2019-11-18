@@ -43,7 +43,7 @@ class GuzzleProxy extends atoum\test
                 'X-Request-Id',
                 'X-RequestParentId'
             ))
-            ->and($c->get($url = 'http://raoul.com'))
+            ->and($c->get($url = 'http://6play.fr'))
             ->mock($guzzleClient)
                 ->call('get')
                     ->withArguments($url, $options)

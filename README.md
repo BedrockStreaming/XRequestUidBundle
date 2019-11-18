@@ -1,5 +1,7 @@
 # XRequestUidBundle
 
+For implementation into a Symfony 3 or Symfony 4 application, please use the release `v3.0.0` at least.
+
 ## Why ?
 
 *"The cool thing in microservices is that you can generate 15 http calls in your infrastructure just with on client http call"*  
@@ -8,7 +10,7 @@
 
 This situation leads to many difficulties to trace calls betweens APIs systems, especially when an internal call fails. This bundle provide a solution to generate ids for new requests and configure your guzzle services accordingly to uses those ids in sub http requests made by them.
 
-The bundle will generate and/or transfert those two headers : X-Request-Uid and X-Request-Parent-Uid.
+The bundle will generate and/or forward those two headers : X-Request-Uid and X-Request-Parent-Uid.
  
 ##  How ? 
 
