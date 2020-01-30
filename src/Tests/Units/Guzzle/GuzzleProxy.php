@@ -2,7 +2,6 @@
 
 namespace M6Web\Bundle\XRequestUidBundle\Tests\Units\Guzzle;
 
-use M6Web\Bundle\XRequestUidBundle\UniqId\UniqId;
 use mageekguy\atoum;
 use M6Web\Bundle\XRequestUidBundle\Guzzle\GuzzleProxy as TestedClass;
 
@@ -28,12 +27,11 @@ class GuzzleProxy extends atoum\test
     /**
      * @param string $method
      */
-    public function testMethod($method, $options = [])
+    public function testMethod($method, $options = [], $expectedOptions = [])
     {
         list($guzzleClient, $requestStack, $uniqId) = $this->getMocks();
 
         $guzzleClient->getMockController()->{$method} = null;
-        $options = array_merge($options, ['headers' => ['X-Request-Id' => '1234', 'X-RequestParentId' => 'ParentId']]);
 
         $this
             ->if($c = new TestedClass(
@@ -43,10 +41,10 @@ class GuzzleProxy extends atoum\test
                 'X-Request-Id',
                 'X-RequestParentId'
             ))
-            ->and($c->get($url = 'http://6play.fr'))
+            ->and($c->get($url = 'http://6play.fr', $options))
             ->mock($guzzleClient)
                 ->call('get')
-                    ->withArguments($url, $options)
+                    ->withArguments($url, $expectedOptions)
                         ->once()
         ;
     }
@@ -58,19 +56,77 @@ class GuzzleProxy extends atoum\test
     {
         return [
             [
-                'get'
+                'get',
+                [],
+                [
+                    'headers' => [
+                        'X-Request-Id' => '1234',
+                        'X-RequestParentId' => 'ParentId',
+                    ]
+                ]
             ],
             [
-                'send'
+                'send',
+                [],
+                [
+                    'headers' => [
+                        'X-Request-Id' => '1234',
+                        'X-RequestParentId' => 'ParentId',
+                    ]
+                ]
             ],
             [
-                'request'
+                'send',
+                [
+                    'headers' => [
+                        'super-header' => 'youpi'
+                    ]
+                ],
+                [
+                    'headers' => [
+                        'super-header' => 'youpi',
+                        'X-Request-Id' => '1234',
+                        'X-RequestParentId' => 'ParentId',
+                    ]
+                ]
+            ],
+            [
+                'request',
+                [],
+                [
+                    'headers' => [
+                        'X-Request-Id' => '1234',
+                        'X-RequestParentId' => 'ParentId',
+                    ]
+                ]
+            ],
+            [
+                'request',
+                [
+                    'headers' => [
+                        'super-header' => 'youpi'
+                    ]
+                ],
+                [
+                    'headers' => [
+                        'super-header' => 'youpi',
+                        'X-Request-Id' => '1234',
+                        'X-RequestParentId' => 'ParentId',
+                    ]
+                ]
             ],
             [
                 'get',
                 [
                     'headers' => [
                         'super-header' => 'youpi'
+                    ]
+                ],
+                [
+                    'headers' => [
+                        'super-header' => 'youpi',
+                        'X-Request-Id' => '1234',
+                        'X-RequestParentId' => 'ParentId',
                     ]
                 ]
             ]
@@ -92,7 +148,4 @@ class GuzzleProxy extends atoum\test
             $uniqId
         ];
     }
-
-
-
 }

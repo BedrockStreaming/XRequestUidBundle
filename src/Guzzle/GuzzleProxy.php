@@ -97,7 +97,7 @@ class GuzzleProxy implements ClientInterface
      */
     public function __call($method, $args)
     {
-        $options = array_merge($args[1] ?? [], $this->getOptions($method));
+        $options = array_merge_recursive($args[1] ?? [], $this->getOptions($method));
         $args[1] = $options;
 
         // forward the call to the client
@@ -113,7 +113,7 @@ class GuzzleProxy implements ClientInterface
      */
     public function request($method, $uri = '', array $options = [])
     {
-        $options = array_merge($options, $this->getOptions($method));
+        $options = array_merge_recursive($options, $this->getOptions($method));
 
         return $this->guzzleClient->request($method, $uri, $options);
     }
@@ -127,7 +127,7 @@ class GuzzleProxy implements ClientInterface
      */
     public function requestAsync($method, $uri = '', array $options = [])
     {
-        $options = array_merge($options, $this->getOptions($method));
+        $options = array_merge_recursive($options, $this->getOptions($method));
 
         return $this->guzzleClient->requestAsync($method, $uri, $options);
     }
@@ -140,7 +140,7 @@ class GuzzleProxy implements ClientInterface
      */
     public function sendAsync(RequestInterface $request, array $options = [])
     {
-        $options = array_merge($options, $this->getOptions($request->getMethod()));
+        $options = array_merge_recursive($options, $this->getOptions($request->getMethod()));
 
         return $this->guzzleClient->sendAsync($request, $options);
     }
@@ -153,7 +153,7 @@ class GuzzleProxy implements ClientInterface
      */
     public function send(RequestInterface $request, array $options = [])
     {
-        $options = array_merge($options, $this->getOptions($request->getMethod()));
+        $options = array_merge_recursive($options, $this->getOptions($request->getMethod()));
 
         return $this->guzzleClient->send($request, $options);
     }
