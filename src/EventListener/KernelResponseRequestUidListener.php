@@ -10,15 +10,10 @@ use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
  */
 class KernelResponseRequestUidListener
 {
-
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $headerName;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $headerParentName;
 
     /**
@@ -27,16 +22,13 @@ class KernelResponseRequestUidListener
      */
     public function __construct($headerName, $headerParentName)
     {
-        $this->headerName       = $headerName;
+        $this->headerName = $headerName;
         $this->headerParentName = $headerParentName;
     }
 
-    /**
-     * @param FilterResponseEvent $event
-     */
     public function onKernelResponse(FilterResponseEvent $event)
     {
-        $request  = $event->getRequest();
+        $request = $event->getRequest();
         $response = $event->getResponse();
 
         if ($request->attributes->has($this->headerName)) {

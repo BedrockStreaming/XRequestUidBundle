@@ -13,7 +13,7 @@ class M6WebXRequestUidBundle extends Bundle
      * trick allowing bypassing the Bundle::getContainerExtension check on getAlias
      * not very clean, to investigate
      *
-     * @return Object DependencyInjection\M6WebStatsdExtension
+     * @return object DependencyInjection\M6WebStatsdExtension
      */
     public function getContainerExtension()
     {

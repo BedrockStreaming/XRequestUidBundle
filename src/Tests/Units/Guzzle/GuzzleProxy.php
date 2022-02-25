@@ -2,12 +2,11 @@
 
 namespace M6Web\Bundle\XRequestUidBundle\Tests\Units\Guzzle;
 
-use mageekguy\atoum;
 use M6Web\Bundle\XRequestUidBundle\Guzzle\GuzzleProxy as TestedClass;
+use atoum\atoum;
 
 class GuzzleProxy extends atoum\test
 {
-
     public function testGuzzle()
     {
         list($guzzleClient, $requestStack, $uniqId) = $this->getMocks();
@@ -62,8 +61,8 @@ class GuzzleProxy extends atoum\test
                     'headers' => [
                         'X-Request-Id' => '1234',
                         'X-RequestParentId' => 'ParentId',
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'send',
@@ -72,23 +71,23 @@ class GuzzleProxy extends atoum\test
                     'headers' => [
                         'X-Request-Id' => '1234',
                         'X-RequestParentId' => 'ParentId',
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'send',
                 [
                     'headers' => [
-                        'super-header' => 'youpi'
-                    ]
+                        'super-header' => 'youpi',
+                    ],
                 ],
                 [
                     'headers' => [
                         'super-header' => 'youpi',
                         'X-Request-Id' => '1234',
                         'X-RequestParentId' => 'ParentId',
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'request',
@@ -97,45 +96,45 @@ class GuzzleProxy extends atoum\test
                     'headers' => [
                         'X-Request-Id' => '1234',
                         'X-RequestParentId' => 'ParentId',
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'request',
                 [
                     'headers' => [
-                        'super-header' => 'youpi'
-                    ]
+                        'super-header' => 'youpi',
+                    ],
                 ],
                 [
                     'headers' => [
                         'super-header' => 'youpi',
                         'X-Request-Id' => '1234',
                         'X-RequestParentId' => 'ParentId',
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'get',
                 [
                     'headers' => [
-                        'super-header' => 'youpi'
-                    ]
+                        'super-header' => 'youpi',
+                    ],
                 ],
                 [
                     'headers' => [
                         'super-header' => 'youpi',
                         'X-Request-Id' => '1234',
                         'X-RequestParentId' => 'ParentId',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
     }
 
     protected function getMocks()
     {
-        $request      = new \Symfony\Component\HttpFoundation\Request([], [], ['X-RequestParentId' => 'ParentId']);
+        $request = new \Symfony\Component\HttpFoundation\Request([], [], ['X-RequestParentId' => 'ParentId']);
         $requestStack = new \mock\Symfony\Component\HttpFoundation\RequestStack();
         $requestStack->getMockController()->getCurrentRequest = $request;
 
@@ -145,7 +144,7 @@ class GuzzleProxy extends atoum\test
         return [
             new \mock\GuzzleHttp\Client(),
             $requestStack,
-            $uniqId
+            $uniqId,
         ];
     }
 }

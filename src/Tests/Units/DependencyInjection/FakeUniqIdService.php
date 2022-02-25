@@ -6,7 +6,6 @@ use M6Web\Bundle\XRequestUidBundle\UniqId\UniqIdInterface;
 
 class FakeUniqIdService implements UniqIdInterface
 {
-
     /**
      * generate a uniqueId
      *

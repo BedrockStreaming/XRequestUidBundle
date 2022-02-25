@@ -18,7 +18,7 @@ composer install --dev
 
 And you can launch coke
 ```bash
-./vendor/bin/coke
+bin/coke
 ```
 
 ## Testing
@@ -32,7 +32,7 @@ composer install --dev
 
 And you can now launch tests
 ```bash
-./vendor/bin/atoum
+bin/atoum
 ```
 
 ## Pull-request

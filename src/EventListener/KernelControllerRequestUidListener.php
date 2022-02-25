@@ -10,36 +10,26 @@ use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
  */
 class KernelControllerRequestUidListener
 {
-    /**
-     * @var UniqIdInterface
-     */
+    /** @var UniqIdInterface */
     protected $uniqId;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $headerName;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $headerParentName;
 
     /**
-     * @param UniqIdInterface $uniqId
-     * @param string          $headerName
-     * @param string          $headerParentName
+     * @param string $headerName
+     * @param string $headerParentName
      */
     public function __construct(UniqIdInterface $uniqId, $headerName, $headerParentName)
     {
-        $this->uniqId           = $uniqId;
-        $this->headerName       = $headerName;
+        $this->uniqId = $uniqId;
+        $this->headerName = $headerName;
         $this->headerParentName = $headerParentName;
     }
 
-    /**
-     * @param FilterControllerEvent $event
-     */
     public function onKernelController(FilterControllerEvent $event)
     {
         $request = $event->getRequest();
